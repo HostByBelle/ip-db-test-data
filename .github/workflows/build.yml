@@ -63,6 +63,11 @@ jobs:
           python ./scripts/parse-aws.py ./data/aws-ranges.json ./test-data/IPv6.json ipv6
           python ./scripts/parse-oracle.py ./data/oracle-ranges.json ./test-data/IPv4.json
 
+      - name: Deduplicate and Process
+        run: |
+          python ./scripts/process.py ./test-data/IPv4.json
+          python ./scripts/process.py ./test-data/IPv6.json
+
       - name: Upload Test Data
         uses: actions/upload-artifact@v3
         with:
