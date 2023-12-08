@@ -1,8 +1,8 @@
-name: Build Test Data
+name: Release
 
 on:
   workflow_run:
-    workflows: [build-data]
+    workflows: [Build Test Data]
     branches: [main]
     types: [completed]
 
