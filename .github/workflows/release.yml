@@ -8,13 +8,14 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 jobs:
   release:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }} && ${{ github.ref == 'refs/heads/main' || github.event_name == 'schedule' }} && "!contains(github.event.head_commit.message, '[skip-build]')"
     steps:
-      - name: Test Data
+      - name: Download Test Data
         uses: dawidd6/action-download-artifact@v2
         with:
           name: test-data
