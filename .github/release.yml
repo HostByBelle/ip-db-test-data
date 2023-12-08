@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  workflow_run:
+    workflows: [build-data]
+    branches: [main]
+    types: [completed]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} && ${{ github.ref == 'refs/heads/main' || github.event_name == 'schedule' }} && "!contains(github.event.head_commit.message, '[skip-build]')"
+    steps:
+      - name: Test Data
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          name: test-data
+          workflow: build.yml
+
+      - name: Set some env variables
+        run: |
+          echo "RELEASE_DATE=$(date '+%D %T')" >> ${GITHUB_ENV}
+          echo "RELEASE_TAG=$(date '+%b.%d.%y.%H.%M.%S')" >> ${GITHUB_ENV}
+
+      - name: Create New Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            *.json
+          name: ${{ env.RELEASE_DATE }}
+          tag_name: ${{ env.RELEASE_TAG }}
+          fail_on_unmatched_files: true
+          body: |
+            ## Built on: ${{ env.RELEASE_DATE }}
+
+      - name: Remove old releases
+        uses: dev-drprasad/delete-older-releases@v0.3.2
+        with:
+          keep_latest: 1
+          delete_tags: true
+          delete_expired_data: 7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
