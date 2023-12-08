@@ -19,3 +19,19 @@ This repository automatically builds both IPv4 and IPv6 information to be used f
 - [Oracle Cloud IP Address Ranges](https://docs.oracle.com/en-us/iaas/tools/public_ip_ranges.json)
   - IP address types: `IPv4`
   - Data available: `Country code`
+
+### Data Processing
+
+Each release will undergo a final "processing" step to ensure the generated data is of good quality.
+The order of processing is as follows:
+
+1. Basic de-duplication by removing duplicate entries of the same CIDR.
+   - A warning will be generated if a duplicate does not contain the same data as it's original.
+   - Only the first instance of a CIDR will be retained in the final data source.
+2. The de-duplicated list is then sorted.
+3. Any CIDRs which are private networks are discarded.
+4. Any 3-letter country codes are converted to 2 letter country codes.
+5. Next all CIDRs are looped through and compared against previous CIDRs to identify any overlaps / subnets.
+   - A subnet is retained and any differing data from the parent (supernet) network is considered valid.
+   - Any overlapping CIDRs are simply discarded with a message as of this moment.
+6. The final dataset after processing is written to the JSON file before then being uploaded to the release.

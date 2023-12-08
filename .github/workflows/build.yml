@@ -19,8 +19,13 @@ jobs:
 
       - run: |
           echo "NOW=$(date '+%D')" >> ${GITHUB_ENV}
+          echo "RELEASE_DATE=$(date '+%D %T')" >> ${GITHUB_ENV}
           mkdir data
           mkdir test-data
+
+      - name: Start the Results File
+        run: |
+          echo -e "# Built on: ${{ env.RELEASE_DATE }}" >> results.md
 
       # Cache key is valid for 1 day & is to make repeat tests more efficient
       - name: Cache Testing Data
@@ -65,8 +70,10 @@ jobs:
 
       - name: Deduplicate and Process
         run: |
-          python ./scripts/process.py ./test-data/IPv4.json
-          python ./scripts/process.py ./test-data/IPv6.json
+          echo -e "\n## IPv4 Processing Result\n" >> results.md
+          python ./scripts/process.py ./test-data/IPv4.json >> results.md
+          echo -e "\n## IPv6 Processing Result\n" >> results.md
+          python ./scripts/process.py ./test-data/IPv6.json >> results.md
 
       - name: Upload Test Data
         uses: actions/upload-artifact@v3
@@ -75,3 +82,4 @@ jobs:
           path: |
             ./test-data/IPv6.json
             ./test-data/IPv4.json
+            ./results.md
