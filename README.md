@@ -28,7 +28,7 @@ The order of processing is as follows:
 1. Basic de-duplication by removing duplicate entries of the same CIDR.
    - A warning will be generated if a duplicate does not contain the same data as it's original.
    - Only the first instance of a CIDR will be retained in the final data source.
-2. The de-duplicated list is then sorted.
+2. The de-duplicated list is then sorted in decending order by the quantity of IP addresses in each CIDR
 3. Any CIDRs which are private networks are discarded.
 4. Any 3-letter country codes are converted to 2 letter country codes.
 5. Next all CIDRs are looped through and compared against previous CIDRs to identify any overlaps / subnets.
