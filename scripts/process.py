@@ -3,6 +3,12 @@ import json
 import ipaddress
 import pycountry
 
+# Some global stats
+totalIPs = 0
+duplicatedCIDRs = 0
+overlappedCIDRs = 0
+ignoredPrivateCIDRs = 0
+
 def convert_to_2_letter_code(three_letter_code):
     try:
         country = pycountry.countries.get(alpha_3=three_letter_code)
@@ -16,6 +22,7 @@ def convert_to_2_letter_code(three_letter_code):
 
 # Quickly handle duplicate CIDR entries.
 def deduplicate(ip_data_list):
+    global duplicatedCIDRs
     ip_entries_dict = {}
 
     for entry in ip_data_list:
@@ -31,6 +38,7 @@ def deduplicate(ip_data_list):
     # Check and handle any duplicates
     for ip_range, entries in ip_entries_dict.items():
         if len(entries) > 1:
+            duplicatedCIDRs += len(entries)
             for duplicate_entry in entries:
                 # If there was a duplicate that didn't match the other entries for a given CIDR, print a message.
                 if not (entries[0] == duplicate_entry):
@@ -44,7 +52,7 @@ def deduplicate(ip_data_list):
     return result
 
 def process(json_file):
-
+    global totalIPs, duplicatedCIDRs, overlappedCIDRs, ignoredPrivateCIDRs
     with open(json_file, 'r') as file:
         ip_data_list = json.load(file)
 
@@ -63,6 +71,10 @@ def process(json_file):
             # Convert IP range to ipaddress object
             ip_network = ipaddress.ip_network(ip_range, strict=False)
 
+            if ip_network.is_private:
+                ignoredPrivateCIDRs+=1
+                continue
+
             # Check IP ranges for overlaps
             if ip_network not in unique_ranges:
                 if len(entry["country_code"]) == 3:
@@ -77,8 +89,11 @@ def process(json_file):
                     elif ip_network.overlaps(existing_range):
                         # Print a warning and discard the overlaping network
                         keep_network = False
+                        overlappedCIDRs+=1
                         print(f"{ip_network} was discarded for overlapping with {existing_range}")
-                
+                    else:
+                        totalIPs+= ip_network.num_addresses
+
                 if keep_network:
                     unique_ranges.add(ip_network)
                     result.append(entry)
@@ -86,6 +101,8 @@ def process(json_file):
         # Write the updated data back to the JSON file
         with open(json_file, 'w', encoding='utf-8') as json_file:
             json.dump(result, json_file, indent=4, ensure_ascii=False)
+
+        print(f"{totalIPs:,} IPs in final data source. There were {duplicatedCIDRs:,} duplicated, {overlappedCIDRs:,} overlapping, and {ignoredPrivateCIDRs:,} private CIDRs that were discarded.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
