@@ -59,8 +59,8 @@ def process(json_file):
         # Quickly handle identical CIDR entries.
         ip_data_list = deduplicate(ip_data_list)
 
-        # Sort the list based on the IP range
-        ip_data_list.sort(key=lambda entry: ipaddress.ip_network(entry["ip_range"], strict=False))
+        # Sort the list based on the number of IP addresses in descending order
+        ip_data_list.sort(key=lambda entry: ipaddress.ip_network(entry["ip_range"], strict=False).num_addresses, reverse=True)
 
         unique_ranges = set()
         result = []
