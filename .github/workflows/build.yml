@@ -68,6 +68,13 @@ jobs:
           python ./scripts/parse-aws.py ./data/aws-ranges.json ./test-data/IPv6.json ipv6
           python ./scripts/parse-oracle.py ./data/oracle-ranges.json ./test-data/IPv4.json
 
+      - name: Parse Data (Geofeeds)
+        run: |
+          find ./data -type f -name "*-geofeed.csv" -print | while read -r file; do
+            python ./scripts/parse-geofeed.py  ./test-data/IPv4.json ip
+            python ./scripts/parse-geofeed.py  ./test-data/IPv6.json ipv6
+          done
+
       - name: Deduplicate and Process
         run: |
           echo -e "\n## IPv4 Processing Result\n" >> results.md
