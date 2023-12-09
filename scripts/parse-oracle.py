@@ -136,16 +136,16 @@ def parse(updown_data, json_file):
                         **region_info[region['region']]
                     })
             else:
-                print(f"{region['region']} is not yet mapped")
+                print(f'(Oracle) {region['region']} is not yet mapped')
 
         # Write the updated data back to the JSON file
         with open(json_file, 'w', encoding='utf-8') as json_file:
             json.dump(data_list, json_file, indent=4, ensure_ascii=False)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("updown_data", help="path to the oracle cloud ranges JSON file")
-    parser.add_argument("json_file", help="path to output JSON file")
+    parser.add_argument('updown_data', help='path to the oracle cloud ranges JSON file')
+    parser.add_argument('json_file', help='path to output JSON file')
     args = parser.parse_args()
 
     parse(args.updown_data, args.json_file)

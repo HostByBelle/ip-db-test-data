@@ -108,7 +108,7 @@ region_info = {
     },
 }
 
-def parse(updown_data, json_file, ipver):
+def parse(aws_ranges, json_file, ipver):
     data_list = []
 
     try:
@@ -118,7 +118,7 @@ def parse(updown_data, json_file, ipver):
     except FileNotFoundError:
         pass  # File doesn't exist yet, ignore and proceed with an empty list
 
-    with open(updown_data, 'r') as file:
+    with open(aws_ranges, 'r') as file:
         aws_ips = json.load(file)
         if ipver == 'ipv6':
             prefixes = aws_ips['ipv6_prefixes']
@@ -135,17 +135,17 @@ def parse(updown_data, json_file, ipver):
                     })
                 else:
                     if prefix['region'] != 'GLOBAL':
-                        print(f"{prefix['region']} is not yet mapped")
+                        print(f'(AWS) {prefix['region']} is not yet mapped')
 
         # Write the updated data back to the JSON file
         with open(json_file, 'w', encoding='utf-8') as json_file:
             json.dump(data_list, json_file, indent=4, ensure_ascii=False)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("updown_data", help="path to the AWS ranges JSON file")
-    parser.add_argument("json_file", help="path to output JSON file")
-    parser.add_argument("ipver", help="IP version (ip or ipv6)")
+    parser.add_argument('aws_ranges', help='path to the AWS ranges JSON file')
+    parser.add_argument('json_file', help='path to output JSON file')
+    parser.add_argument('ipver', help='IP version (ip or ipv6)')
     args = parser.parse_args()
 
-    parse(args.updown_data, args.json_file, args.ipver)
+    parse(args.aws_ranges, args.json_file, args.ipver)
