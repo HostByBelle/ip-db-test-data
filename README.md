@@ -6,19 +6,31 @@ This repository automatically builds both IPv4 and IPv6 information to be used f
 
 - [Pingdom probe server data](https://www.pingdom.com/rss/probe_servers.xml)
   - IP address types: `IPv4`, `IPv6`
-  - Data available: `Country code`, `Country name`, `City`, `Region`
+  - Data available: `Country Code`, `Country Name`, `City`, `Region`
 - [Hetrix Monitoring IPs](https://docs.hetrixtools.com/uptime-monitoring-ip-addresses/)
   - IP address types: `IPv4`
-  - Data available: `Country code`, `City`
+  - Data available: `Country Code`, `City`
 - [Updown.io Monitoring IPs](https://updown.io/api/nodes)
   - IP address types: `IPv4`, `IPv6`
-  - Data available: `Country code`, `City`, `Latitude`, `Longitude`
+  - Data available: `Country Code`, `City`, `Latitude`, `Longitude`
 - [AWS IP Address Ranges](https://ip-ranges.amazonaws.com/ip-ranges.json)
   - IP address types: `IPv4`, `IPv6`
-  - Data available: `Country code`
+  - Data available: `Country Code`
 - [Oracle Cloud IP Address Ranges](https://docs.oracle.com/en-us/iaas/tools/public_ip_ranges.json)
   - IP address types: `IPv4`
-  - Data available: `Country code`
+  - Data available: `Country Code`
+- [Linode Geofeed](https://geoip.linode.com/)
+  - IP address types: `IPv4`, `IPv6`
+  - Data available: `Country Code`, `Subdivision Code`, `City Name`, `Postal Code`
+- [DigitalOcean Geofeed](https://digitalocean.com/geo/google.csv)
+  - IP address types: `IPv4`, `IPv6`
+  - Data available: `Country Code`, `Subdivision Code`, `City Name`, `Postal Code`
+- [Vultr Geofeed](https://digitalocean.com/geo/google.csv)
+  - IP address types: `IPv4`, `IPv6`
+  - Data available: `Country Code`, `Subdivision Code`, `City Name`, `Postal Code`
+- [Starlink Geofeed](https://geoip.starlinkisp.net/feed.csv)
+  - IP address types: `IPv4`, `IPv6`
+  - Data available: `Country Code`, `Subdivision Code`, `City Name`
 
 ### Data Processing
 
