@@ -6,10 +6,10 @@ This repository automatically builds both IPv4 and IPv6 information to be used f
 
 - [Pingdom probe server data](https://www.pingdom.com/rss/probe_servers.xml)
   - IP address types: `IPv4`, `IPv6`
-  - Data available: `Country Code`, `Country Name`, `City`, `Region`
+  - Data available: `Country Code`, `Country Name`, `City`
 - [Hetrix Monitoring IPs](https://docs.hetrixtools.com/uptime-monitoring-ip-addresses/)
   - IP address types: `IPv4`
-  - Data available: `Country Code`, `City`
+  - Data available: `Country Code`, `City`, `Subdivision Code`
 - [Updown.io Monitoring IPs](https://updown.io/api/nodes)
   - IP address types: `IPv4`, `IPv6`
   - Data available: `Country Code`, `City`, `Latitude`, `Longitude`

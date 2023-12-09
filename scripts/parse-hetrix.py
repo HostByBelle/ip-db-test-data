@@ -6,51 +6,63 @@ import ipaddress
 wk_mapping = {
     'wk1': {
         'country_code': 'US',
-        'city': 'New York'
+        'city': 'New York',
+        'subdivision_1_iso_code': 'US-NY'
     },
     'wk2': {
         'country_code': 'US',
-        'city': 'San Francisco'
+        'city': 'San Francisco',
+        'subdivision_1_iso_code': 'US-CA'
     },
     'wk3': {
         'country_code': 'NL',
-        'city': 'Amsterdam'
+        'city': 'Amsterdam',
+        'subdivision_1_iso_code': 'NL-NH'
     },
     'wk4': {
         'country_code': 'GB',
-        'city': 'London'
+        'city': 'London',
+        'subdivision_1_iso_code': 'GB-LND'
     },
     'wk5': {
         'country_code': 'DE',
-        'city': 'Frankfurt'
+        'city': 'Frankfurt',
+        'subdivision_1_iso_code': 'DE-HE'
     },
     'wk6': {
         'country_code': 'SG',
-        'city': 'Singapore'
+        'city': 'Singapore',
+        'subdivision_1_iso_code': 'SG-01'
     },
     'wk7': {
         'country_code': 'US',
-        'city': 'Dallas'
+        'city': 'Dallas',
+        'subdivision_1_iso_code': 'US-TX'
     },
     'wk8': {
         'country_code': 'AUS',
-        'city': 'Sydney'
+        'city': 'Sydney',
+        'subdivision_1_iso_code': 'AU-NSW'
         },
     'wk9': {
         'country_code': 'BR',
-        'city': 'Sao Paulo'
+        'city': 'São Paulo',
+        'subdivision_1_iso_code': 'BR-SP'
     },
     'wk10': {
         'country_code': 'JP',
-        'city': 'Tokyo'
+        'city': 'Tokyo',
+        'subdivision_1_iso_code': 'JP-13'
     },
     'wk11': {
         'country_code': 'IN',
-        'city': 'Mumbai'
+        'city': 'Mumbai',
+        'subdivision_1_iso_code': 'IN-MH'
     },
     'wk12': {
         'country_code': 'PL',
-        'city': 'Warsaw'
+        'city': 'Warsaw',
+        'subdivision_1_iso_code': 'PL-MZ'
     }
 }
 
@@ -90,16 +102,16 @@ def parse(file_path, json_file):
                             **wk_mapping[wk]
                         })
                     else:
-                        print(f"{wk} is not yet mapped")
+                        print(f'(Hetrix) {wk} is not yet mapped')
 
         # Write the updated data back to the JSON file
         with open(json_file, 'w', encoding='utf-8') as json_file:
             json.dump(data_list, json_file, indent=4, ensure_ascii=False)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("file_path", help="path to the file")
-    parser.add_argument("json_file", help="path to output JSON file")
+    parser.add_argument('file_path', help='path to the file')
+    parser.add_argument('json_file', help='path to output JSON file')
     args = parser.parse_args()
 
     parse(args.file_path, args.json_file)
