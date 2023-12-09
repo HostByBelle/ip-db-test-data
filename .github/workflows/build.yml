@@ -45,7 +45,12 @@ jobs:
           curl --show-error --output statuscake.json --location "https://app.statuscake.com/Workfloor/Locations.php?format=json"
           curl --show-error --output aws-ranges.json --location "https://ip-ranges.amazonaws.com/ip-ranges.json"
           curl --show-error --output oracle-ranges.json --location "https://docs.oracle.com/en-us/iaas/tools/public_ip_ranges.json"
+          curl --show-error --output linode-geofeed.csv --location "https://geoip.linode.com/"
+          curl --show-error --output digitalocean-geofeed.csv --location "https://digitalocean.com/geo/google.csv"
+          curl --show-error --output vultr-geofeed.csv --location "https://geofeed.constant.com/"
+          curl --show-error --output starlink-geofeed.csv --location "https://geoip.starlinkisp.net/feed.csv"
 
+          
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
