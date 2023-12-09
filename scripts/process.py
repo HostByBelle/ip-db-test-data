@@ -82,21 +82,23 @@ def process(json_file):
 
                 # Handle overlaps / subnets
                 keep_network = True
+                was_in_subnet = False
                 for existing_range in unique_ranges:
                     if ip_network.subnet_of(existing_range):
                         # A subnet can have seperate info from it's larger network and as such shoyuld be handled as correct
                         keep_network = True
+                        was_in_subnet = True
                     elif ip_network.overlaps(existing_range):
                         # Print a warning and discard the overlaping network
                         keep_network = False
                         overlappedCIDRs+=1
                         print(f"{ip_network} was discarded for overlapping with {existing_range}")
-                    else:
-                        totalIPs+= ip_network.num_addresses
 
                 if keep_network:
                     unique_ranges.add(ip_network)
                     result.append(entry)
+                    if not was_in_subnet:
+                        totalIPs+= ip_network.num_addresses
 
         # Write the updated data back to the JSON file
         with open(json_file, 'w', encoding='utf-8') as json_file:
