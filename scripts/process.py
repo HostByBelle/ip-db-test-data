@@ -92,7 +92,7 @@ def process(json_file):
                 was_in_subnet = False
                 
                 for kept_entry in result:
-                    existing_range = ipaddress.ip_network(kept_entry['ip_range'])
+                    existing_range = ipaddress.ip_network(kept_entry['ip_range'], strict=False)
                     if ip_network.subnet_of(existing_range):
                         test_data_1 = entry.copy()
                         test_data_2 = kept_entry.copy()
