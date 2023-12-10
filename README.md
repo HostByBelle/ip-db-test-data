@@ -24,6 +24,9 @@ The data is built utilizing self-published data by various providers. No 3rd par
   - IP address types: `IPv4`
   - Data available: `Country Code`
   - Note: Utilizes a [hand-built mapping](https://github.com/HostByBelle/ip-db-test-data/blob/main/scripts/parse-oracle.py#L5) between Oracle's region IDs and their locations.
+- [Linode Geofeed](https://geoip.linode.com/)
+  - IP address types: `IPv4`, `IPv6`
+  - Data available: `Country Code`, `Subdivision Code`, `City Name`, `Postal Code`
 - [DigitalOcean Geofeed](https://digitalocean.com/geo/google.csv)
   - IP address types: `IPv4`, `IPv6`
   - Data available: `Country Code`, `Subdivision Code`, `City Name`, `Postal Code`
@@ -36,10 +39,6 @@ The data is built utilizing self-published data by various providers. No 3rd par
 - [Google Cloud Geofeed](https://www.gstatic.com/ipranges/cloud_geofeed)
   - IP address types: `IPv4`, `IPv6`
   - Data available: `Country Code`, `Subdivision Code`, `City Name`
-- [Geolocate Much?](https://geolocatemuch.com/)
-  - IP address types: `IPv4`, `IPv6`
-  - Data available: `Country Code`, `Subdivision Code`, `City Name`, `Postal Code`
-  - Note: This website builds a complete geofeed that are discoverable via RFC9092 and then publishes a singular geofeed which this repository then parses into the final dataset.
 
 ## Data Processing
 
