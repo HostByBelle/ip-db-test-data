@@ -18,7 +18,7 @@ def parse(geofeed_csv, json_file, ipver):
         
         for row in csv_reader:
             if not row[0].startswith('#'):
-                network = ipaddress.ip_network(row[0])
+                network = ipaddress.ip_network(row[0], strict=False)
                 if (ipver == 'ip' and network.version == 4) or (ipver == 'ipv6' and network.version == 6):
                     data_list.append({
                         'ip_range': row[0],
