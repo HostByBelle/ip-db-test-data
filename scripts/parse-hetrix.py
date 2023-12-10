@@ -3,6 +3,8 @@ import re
 import json
 import ipaddress
 
+# Each "wk*-" hostname is associated with a location and this mapping was manually built utilizing their documentation
+# See https://docs.hetrixtools.com/uptime-monitoring-ip-addresses/ and https://hetrixtools.com/resources/uptime-monitor-ips.txt
 wk_mapping = {
     'wk1': {
         'country_code': 'US',
