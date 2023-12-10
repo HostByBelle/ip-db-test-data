@@ -66,6 +66,13 @@ def process(json_file):
         result = []
 
         for entry in ip_data_list:
+
+            # Make a copy of the entry, remove the IP range, and then check if it evaluates to false. If it does, that IP range has no data associated with it and can be discarded
+            entry_copy = entry.copy()
+            del(entry_copy['ip_range'])
+            if not entry_copy:
+                continue
+
             ip_range = entry['ip_range']
 
             # Convert IP range to ipaddress object
