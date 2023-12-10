@@ -32,11 +32,11 @@ def parse(geofeed_csv, json_file, ipver):
         with open(json_file, 'w', encoding='utf-8') as json_file:
             json.dump(data_list, json_file, indent=4, ensure_ascii=False)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("geofeed_csv", help="path to the RFC 8805 Geofeed CSV file")
-    parser.add_argument("json_file", help="path to output JSON file")
-    parser.add_argument("ipver", help="IP version (ip or ipv6)")
+    parser.add_argument('geofeed_csv', help='path to the RFC 8805 Geofeed CSV file')
+    parser.add_argument('json_file', help='path to output JSON file')
+    parser.add_argument('ipver', help='IP version (ip or ipv6)')
     args = parser.parse_args()
 
     parse(args.geofeed_csv, args.json_file, args.ipver)
