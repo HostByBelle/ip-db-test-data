@@ -4,7 +4,7 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-  - package-ecosystem: "scripts"
-    directory: "/tests"
+  - package-ecosystem: "pip"
+    directory: "/scripts"
     schedule:
       interval: "weekly"
