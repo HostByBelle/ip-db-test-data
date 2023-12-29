@@ -137,7 +137,6 @@ def parse(aws_ranges, json_file, ipver):
                     if prefix['region'] != 'GLOBAL':
                         region = prefix['region']
                         print(f'(AWS) {region} is not yet mapped')
-                        #print(f'(AWS) {prefix['region']} is not yet mapped')
 
         # Write the updated data back to the JSON file
         with open(json_file, 'w', encoding='utf-8') as json_file:

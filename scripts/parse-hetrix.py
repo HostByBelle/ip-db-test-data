@@ -104,8 +104,7 @@ def parse(file_path, json_file):
                             **wk_mapping[wk]
                         })
                     else:
-                        continue
-                        #print(f'(Hetrix) {wk} is not yet mapped')
+                        print(f'(Hetrix) {wk} is not yet mapped')
 
         # Write the updated data back to the JSON file
         with open(json_file, 'w', encoding='utf-8') as json_file:
