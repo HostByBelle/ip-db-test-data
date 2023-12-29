@@ -1,2 +1,2 @@
-pycountry==22.3.5
+pycountry==23.12.11
 ujson==5.9.0
