@@ -1,5 +1,5 @@
 import argparse
-import json
+import ujson
 import ipaddress
 import pycountry
 
@@ -54,7 +54,7 @@ def deduplicate(ip_data_list):
 def process(json_file):
     global totalIPs, duplicatedCIDRs, overlappedCIDRs, ignoredPrivateCIDRs
     with open(json_file, 'r') as file:
-        ip_data_list = json.load(file)
+        ip_data_list = ujson.load(file)
 
         # Quickly handle identical CIDR entries.
         ip_data_list = deduplicate(ip_data_list)
@@ -119,7 +119,7 @@ def process(json_file):
 
         # Write the updated data back to the JSON file
         with open(json_file, 'w', encoding='utf-8') as json_file:
-            json.dump(result, json_file, indent=4, ensure_ascii=False)
+            ujson.dump(result, json_file, indent=4, ensure_ascii=False)
 
         print(f'{totalIPs:,} IPs in the final data source. There were {duplicatedCIDRs:,} duplicated, {overlappedCIDRs:,} overlapping, and {ignoredPrivateCIDRs:,} private CIDRs that were discarded.')
 

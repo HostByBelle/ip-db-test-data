@@ -1,5 +1,5 @@
 import argparse
-import json
+import ujson
 import xml.etree.ElementTree as ET
 import ipaddress
 
@@ -17,7 +17,7 @@ def parse_xml(xml_file, ip_type, json_file):
     try:
         # Load existing data from the JSON file
         with open(json_file, 'r') as existing_file:
-            data_list = json.load(existing_file)
+            data_list = ujson.load(existing_file)
     except FileNotFoundError:
         pass  # File doesn't exist yet, ignore and proceed with an empty list
 
@@ -43,7 +43,7 @@ def parse_xml(xml_file, ip_type, json_file):
 
     # Write the updated data back to the JSON file
     with open(json_file, 'w', encoding='utf-8') as json_file:
-        json.dump(data_list, json_file, indent=4, ensure_ascii=False)
+        ujson.dump(data_list, json_file, indent=4, ensure_ascii=False)
 
 def main():
     parser = argparse.ArgumentParser()

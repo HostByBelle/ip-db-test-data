@@ -1,5 +1,5 @@
 import argparse
-import json
+import ujson
 
 # Manually gathered from https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html
 # It's somewhat incomplete, though so some info was gathered via google and educated guesses.
@@ -114,12 +114,12 @@ def parse(aws_ranges, json_file, ipver):
     try:
         # Load existing data from the JSON file
         with open(json_file, 'r') as existing_file:
-            data_list = json.load(existing_file)
+            data_list = ujson.load(existing_file)
     except FileNotFoundError:
         pass  # File doesn't exist yet, ignore and proceed with an empty list
 
     with open(aws_ranges, 'r') as file:
-        aws_ips = json.load(file)
+        aws_ips = ujson.load(file)
         if ipver == 'ipv6':
             prefixes = aws_ips['ipv6_prefixes']
         else:
@@ -140,7 +140,7 @@ def parse(aws_ranges, json_file, ipver):
 
         # Write the updated data back to the JSON file
         with open(json_file, 'w', encoding='utf-8') as json_file:
-            json.dump(data_list, json_file, indent=4, ensure_ascii=False)
+            ujson.dump(data_list, json_file, indent=4, ensure_ascii=False)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

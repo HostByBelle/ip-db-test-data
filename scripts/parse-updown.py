@@ -1,5 +1,5 @@
 import argparse
-import json
+import ujson
 import ipaddress
 
 def get_range(address):
@@ -12,12 +12,12 @@ def parse(updown_data, json_file, ipver):
     try:
         # Load existing data from the JSON file
         with open(json_file, 'r') as existing_file:
-            data_list = json.load(existing_file)
+            data_list = ujson.load(existing_file)
     except FileNotFoundError:
         pass  # File doesn't exist yet, ignore and proceed with an empty list
 
     with open(updown_data, 'r') as file:
-        updown_nodes = json.load(file)
+        updown_nodes = ujson.load(file)
         for node in updown_nodes:
             data_list.append({
                 'ip_range': get_range(updown_nodes[node][ipver]),
@@ -29,7 +29,7 @@ def parse(updown_data, json_file, ipver):
 
         # Write the updated data back to the JSON file
         with open(json_file, 'w', encoding='utf-8') as json_file:
-            json.dump(data_list, json_file, indent=4, ensure_ascii=False)
+            ujson.dump(data_list, json_file, indent=4, ensure_ascii=False)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
