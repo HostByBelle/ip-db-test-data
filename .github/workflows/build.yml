@@ -53,7 +53,7 @@ jobs:
           #curl --show-error --output geolocatemuch-geofeed.csv --location "https://geolocatemuch.com/geofeeds/validated-all.csv"
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "pypy3.10"
 
