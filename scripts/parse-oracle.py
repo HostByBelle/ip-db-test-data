@@ -136,7 +136,8 @@ def parse(updown_data, json_file):
                         **region_info[region['region']]
                     })
             else:
-                print(f'(Oracle) {region['region']} is not yet mapped')
+                region = region['region']
+                print(f'(Oracle) {region} is not yet mapped')
 
         # Write the updated data back to the JSON file
         with open(json_file, 'w', encoding='utf-8') as json_file:
