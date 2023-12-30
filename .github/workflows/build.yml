@@ -91,7 +91,7 @@ jobs:
           python ./scripts/process.py ./test-data/IPv6.json >> results.md
 
       - name: Upload Test Data
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-data
           path: |
