@@ -33,7 +33,7 @@ jobs:
         id: cache-test-data
         with:
           path: ./data
-          key: testing-data-${{ env.NOW }}
+          key: testing-data-${{ env.NOW }}-${{ github.ref_name }}
 
       - name: Download Test Data
         if: steps.cache-test-data.outputs.cache-hit != 'true'
