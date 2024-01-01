@@ -54,15 +54,18 @@ def deduplicate(ip_data_list):
     return result
 
 def should_keep(args_tuple):
-    kept_entry, current_network, entry_copy = args_tuple
+    kept_entry, current_entry = args_tuple
     keep_network = True
     was_in_subnet = False
     existing_range = ipaddress.ip_network(kept_entry['ip_range'], strict=False)
+    current_network = ipaddress.ip_network(current_entry['ip_range'], strict=False)
     if current_network.subnet_of(existing_range):
+        test_data_1 = current_entry.copy()
         test_data_2 = kept_entry.copy()
+        del(test_data_1['ip_range'])
         del(test_data_2['ip_range'])
         # If a subnet has the same info as the supernet, remove it entirely.
-        if entry_copy == test_data_2:
+        if test_data_1 == test_data_2:
             keep_network = False
         else:
             # A subnet can have separate info from its larger network and as such should be handled as correct
@@ -117,7 +120,7 @@ def process(json_file):
                 keep_network = True
                 was_in_subnet = False
                 with Pool() as pool:
-                    args = zip(result, [ip_network] * len(result), [entry_copy] * len(result))
+                    args = zip(result, [entry] * len(result))
                     results = pool.imap_unordered(should_keep, args, chunksize=50)
                     for keep, was_subnet in results:
                         if not keep:
