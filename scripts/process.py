@@ -21,37 +21,6 @@ def convert_to_2_letter_code(three_letter_code):
         print(f'Error: {e}')
         return None
 
-# Quickly handle duplicate CIDR entries.
-def deduplicate(ip_data_list):
-    global duplicatedCIDRs
-    ip_entries_dict = {}
-
-    for entry in ip_data_list:
-        ip_range = entry['ip_range']
-        
-        if ip_range in ip_entries_dict:
-            ip_entries_dict[ip_range].append(entry)
-        else:
-            ip_entries_dict[ip_range] = [entry]
-
-    result = []
-
-    # Check and handle any duplicates
-    for ip_range, entries in ip_entries_dict.items():
-        if len(entries) > 1:
-            duplicatedCIDRs += len(entries)
-            for duplicate_entry in entries:
-                # If there was a duplicate that didn't match the other entries for a given CIDR, print a message.
-                if not (entries[0] == duplicate_entry):
-                    print(f'{ip_range} has duplicates with mismatched info:')
-                    print(f'{entries}')
-            chosen_entry = entries[0]  # Only keep the first on
-            result.append(chosen_entry)
-        else:
-            result.append(entries[0])
-
-    return result
-
 def process(json_file):
     global totalIPs, duplicatedCIDRs, overlappedCIDRs, ignoredPrivateCIDRs
 
@@ -61,24 +30,17 @@ def process(json_file):
     with open(json_file, 'r') as file:
         ip_data_list = ujson.load(file)
 
-        # Quickly handle identical CIDR entries.
-        ip_data_list = deduplicate(ip_data_list)
-
         # Sort the list based on the number of IP addresses in descending order
-        ip_data_list.sort(key=lambda entry: ipaddress.ip_network(entry['ip_range'], strict=False).num_addresses, reverse=True)
+        ip_data_list.sort(key=lambda ip_range: ipaddress.ip_network(ip_range, strict=False).num_addresses, reverse=True)
 
         unique_ranges = set()
         result = []
 
-        for entry in ip_data_list:
+        for ip_range, entry in ip_data_list:
             # Make a copy of the entry, remove the IP range, and then check if it evaluates to false.
             # If it does, that IP range has no data associated with it and can be discarded
-            entry_copy = entry.copy()
-            del(entry_copy['ip_range'])
-            if not entry_copy:
+            if not entry:
                 continue
-
-            ip_range = entry['ip_range']
 
             # Convert IP range to ipaddress object
             ip_network = ipaddress.ip_network(ip_range, strict=False)
@@ -96,13 +58,11 @@ def process(json_file):
                 keep_network = True
                 was_in_subnet = False
                 
-                for kept_entry in result:
-                    existing_range = ipaddress.ip_network(kept_entry['ip_range'], strict=False)
+                for kept_ip_range, kept_entry in result:
+                    existing_range = ipaddress.ip_network(kept_ip_range, strict=False)
                     if ip_network.subnet_of(existing_range):
-                        test_data_2 = kept_entry.copy()
-                        del(test_data_2['ip_range'])
                         # If a subnet has the same info as the supernet, remove it entirely.
-                        if entry_copy == test_data_2:
+                        if entry == kept_entry:
                             keep_network = False
                         else:
                             # A subnet can have separate info from its larger network and as such should be handled as correct

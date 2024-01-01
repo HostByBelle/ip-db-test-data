@@ -99,10 +99,10 @@ def parse(file_path, json_file):
 
                 if hostname and ip_address and wk:
                     if wk in wk_mapping:
-                        data_list.append({
-                            'ip_range': get_range(ip_address),
-                            **wk_mapping[wk]
-                        })
+                        if get_range(ip_address) not in data_list:
+                            data_list[get_range(ip_address)] = wk_mapping[wk]
+                        else:
+                            print(f'(Hetrix) {get_range(ip_address)} is already in the dataset')
                     else:
                         print(f'(Hetrix) {wk} is not yet mapped')
 

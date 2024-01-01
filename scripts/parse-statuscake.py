@@ -17,14 +17,16 @@ def parse(updown_data, json_file, ipver):
         pass  # File doesn't exist yet, ignore and proceed with an empty list
 
     with open(updown_data, 'r') as file:
-        updown_nodes = ujson.load(file)
-        for node in updown_nodes:
-            if not updown_nodes[node][ipver]:
+        statuscake_node = ujson.load(file)
+        for node in statuscake_node:
+            if not statuscake_node[node][ipver]:
                 continue
-            data_list.append({
-                'ip_range': get_range(updown_nodes[node][ipver]),
-                'country_code': updown_nodes[node]['countryiso'],
-            })
+            if get_range(statuscake_node[node][ipver]) not in data_list:
+                data_list[get_range(statuscake_node[node][ipver])] = {
+                    'country_code': statuscake_node[node]['countryiso']
+                }
+            else:
+                print(f'(StatusCake) {get_range(statuscake_node[node][ipver])} is already in the dataset')
 
         # Write the updated data back to the JSON file
         with open(json_file, 'w', encoding='utf-8') as json_file:

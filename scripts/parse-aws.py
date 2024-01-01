@@ -128,15 +128,13 @@ def parse(aws_ranges, json_file, ipver):
         for prefix in prefixes:
             prefix_key = ipver + '_prefix'
             if prefix_key in prefix and prefix[prefix_key]:
-                if prefix['region'] in region_info:
-                    data_list.append({
-                        'ip_range': prefix[prefix_key],
-                        **region_info[prefix['region']]
-                    })
-                else:
-                    if prefix['region'] != 'GLOBAL':
+                if prefix['region'] in region_info & prefix[prefix_key] not in data_list:
+                    data_list[prefix[prefix_key]] = region_info[prefix['region']]
+                elif prefix['region'] != 'GLOBAL':
                         region = prefix['region']
                         print(f'(AWS) {region} is not yet mapped')
+                else:
+                    print(f'(AWS) {prefix[prefix_key]} is already in the dataset')
 
         # Write the updated data back to the JSON file
         with open(json_file, 'w', encoding='utf-8') as json_file:

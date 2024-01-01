@@ -35,11 +35,13 @@ def parse_xml(xml_file, ip_type, json_file):
         
         city = item.find('pingdom:city', {'pingdom': PINGDOM_NAMESPACE}).text
 
-        data_list.append({
-            'ip_range': get_range(ip_address),
-            'country_code': country_code,
-            'city': city
-        })
+        if get_range(ip_address) not in data_list:
+            data_list[get_range(ip_address)] = {
+                'country_code': country_code,
+                'city': city
+            }
+        else:
+            print(f'(Pingdom) {get_range(ip_address)} is already in the dataset')
 
     # Write the updated data back to the JSON file
     with open(json_file, 'w', encoding='utf-8') as json_file:

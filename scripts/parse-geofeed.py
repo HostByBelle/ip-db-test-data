@@ -20,13 +20,15 @@ def parse(geofeed_csv, json_file, ipver):
             if not row[0].startswith('#'):
                 network = ipaddress.ip_network(row[0], strict=False)
                 if (ipver == 'ip' and network.version == 4) or (ipver == 'ipv6' and network.version == 6):
-                    data_list.append({
-                        'ip_range': row[0],
-                        'country_code': row[1],
-                        'subdivision_1_iso_code': row[2],
-                        'city': row[3],
-                        'postal_code': row[4],
-                    })
+                    if(row[0] not in data_list):
+                        data_list[row[0]] = {
+                            'country_code': row[1],
+                            'subdivision_1_iso_code': row[2],
+                            'city': row[3],
+                            'postal_code': row[4],
+                        }
+                    else:
+                        print(f'(Geofeed) {row[0]} is already in the dataset')
 
         # Write the updated data back to the JSON file
         with open(json_file, 'w', encoding='utf-8') as json_file:

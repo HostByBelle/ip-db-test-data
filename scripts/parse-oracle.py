@@ -131,10 +131,10 @@ def parse(updown_data, json_file):
         for region in oracle_ips['regions']:
             if region['region'] in region_info:
                 for cidr in region['cidrs']:
-                    data_list.append({
-                        'ip_range': cidr['cidr'],
-                        **region_info[region['region']]
-                    })
+                    if cidr['cidr'] not in data_list:
+                        data_list[cidr['cidr']] = region_info[region['region']]
+                    else:
+                        print(f'(Oracle) {cidr['cidr']} is already in the dataset')
             else:
                 region = region['region']
                 print(f'(Oracle) {region} is not yet mapped')

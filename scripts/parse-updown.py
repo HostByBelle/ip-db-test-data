@@ -19,13 +19,15 @@ def parse(updown_data, json_file, ipver):
     with open(updown_data, 'r') as file:
         updown_nodes = ujson.load(file)
         for node in updown_nodes:
-            data_list.append({
-                'ip_range': get_range(updown_nodes[node][ipver]),
-                'country_code': updown_nodes[node]['country_code'],
-                'city': updown_nodes[node]['city'],
-                'lat': updown_nodes[node]['lat'],
-                'lng': updown_nodes[node]['lng'],
-            })
+            if get_range(updown_nodes[node][ipver]) not in data_list:
+                data_list[get_range(updown_nodes[node][ipver])] = {
+                    'country_code': updown_nodes[node]['country_code'],
+                    'city': updown_nodes[node]['city'],
+                    'lat': updown_nodes[node]['lat'],
+                    'lng': updown_nodes[node]['lng'],
+                }
+            else:
+                print(f'(Updown) {get_range(updown_nodes[node][ipver])} is already in the dataset')
 
         # Write the updated data back to the JSON file
         with open(json_file, 'w', encoding='utf-8') as json_file:
