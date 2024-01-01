@@ -2,6 +2,8 @@ import argparse
 import ujson
 import ipaddress
 import pycountry
+import time
+import tracemalloc
 
 # Some global stats
 totalIPs = 0
@@ -51,8 +53,14 @@ def deduplicate(ip_data_list):
 
     return result
 
-def process(json_file):
+def process(json_file, track_mem):
     global totalIPs, duplicatedCIDRs, overlappedCIDRs, ignoredPrivateCIDRs
+
+    # Record the start time and memory usage before processing
+    start_time = time.time()
+    if track_mem != 0:
+        tracemalloc.start()
+
     with open(json_file, 'r') as file:
         ip_data_list = ujson.load(file)
 
@@ -66,8 +74,8 @@ def process(json_file):
         result = []
 
         for entry in ip_data_list:
-
-            # Make a copy of the entry, remove the IP range, and then check if it evaluates to false. If it does, that IP range has no data associated with it and can be discarded
+            # Make a copy of the entry, remove the IP range, and then check if it evaluates to false.
+            # If it does, that IP range has no data associated with it and can be discarded
             entry_copy = entry.copy()
             del(entry_copy['ip_range'])
             if not entry_copy:
@@ -94,12 +102,11 @@ def process(json_file):
                 for kept_entry in result:
                     existing_range = ipaddress.ip_network(kept_entry['ip_range'], strict=False)
                     if ip_network.subnet_of(existing_range):
-                        test_data_1 = entry.copy()
                         test_data_2 = kept_entry.copy()
-                        del(test_data_1['ip_range'])
+                        del(entry_copy['ip_range'])
                         del(test_data_2['ip_range'])
                         # If a subnet has the same info as the supernet, remove it entirely.
-                        if test_data_1 == test_data_2:
+                        if entry_copy == test_data_2:
                             keep_network = False
                         else:
                             # A subnet can have separate info from its larger network and as such should be handled as correct
@@ -119,13 +126,24 @@ def process(json_file):
 
         # Write the updated data back to the JSON file
         with open(json_file, 'w', encoding='utf-8') as json_file:
-            ujson.dump(result, json_file, indent=4, ensure_ascii=False)
+            ujson.dump(result, json_file, indent=0, ensure_ascii=False)
+
+        # Calculate the time taken and memory used
+        elapsed_time = time.time() - start_time
 
         print(f'{totalIPs:,} IPs in the final data source. There were {duplicatedCIDRs:,} duplicated, {overlappedCIDRs:,} overlapping, and {ignoredPrivateCIDRs:,} private CIDRs that were discarded.')
+        print(f'Time taken: {elapsed_time:.2f} seconds')
+
+        if track_mem != 0:
+            mem_used = tracemalloc.get_traced_memory()
+            peak_usage = mem_used[1] * 0.000001
+            print(f'Memory used: {peak_usage} MB')
+            tracemalloc.stop()
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('json_file', help='path to output JSON file')
+    parser.add_argument('--track_mem', help="Pass 1 to enable memory usage tracking", default=0, required=False)
     args = parser.parse_args()
 
-    process(args.json_file)
+    process(args.json_file, args.track_mem)

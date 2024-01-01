@@ -28,7 +28,7 @@ def parse(updown_data, json_file, ipver):
 
         # Write the updated data back to the JSON file
         with open(json_file, 'w', encoding='utf-8') as json_file:
-            ujson.dump(data_list, json_file, indent=4, ensure_ascii=False)
+            ujson.dump(data_list, json_file, indent=0, ensure_ascii=False)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
