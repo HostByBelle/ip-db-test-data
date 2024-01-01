@@ -100,7 +100,6 @@ def process(json_file):
                     existing_range = ipaddress.ip_network(kept_entry['ip_range'], strict=False)
                     if ip_network.subnet_of(existing_range):
                         test_data_2 = kept_entry.copy()
-                        del(entry_copy['ip_range'])
                         del(test_data_2['ip_range'])
                         # If a subnet has the same info as the supernet, remove it entirely.
                         if entry_copy == test_data_2:
