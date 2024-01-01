@@ -3,6 +3,7 @@ import ujson
 import ipaddress
 import pycountry
 import time
+from multiprocessing import Pool
 
 # Some global stats
 totalIPs = 0
@@ -52,6 +53,27 @@ def deduplicate(ip_data_list):
 
     return result
 
+def should_keep(args_tuple):
+    kept_entry, current_network, entry_copy = args_tuple
+    keep_network = True
+    was_in_subnet = False
+    existing_range = ipaddress.ip_network(kept_entry['ip_range'], strict=False)
+    if current_network.subnet_of(existing_range):
+        test_data_2 = kept_entry.copy()
+        del(test_data_2['ip_range'])
+        # If a subnet has the same info as the supernet, remove it entirely.
+        if entry_copy == test_data_2:
+            keep_network = False
+        else:
+            # A subnet can have separate info from its larger network and as such should be handled as correct
+            keep_network = True
+            was_in_subnet = True
+    elif current_network.overlaps(existing_range):
+        # Print a warning and discard the overlapping network
+        keep_network = False
+        print(f'{current_network} was discarded for overlapping with {existing_range}')
+    return [keep_network, was_in_subnet]
+
 def process(json_file):
     global totalIPs, duplicatedCIDRs, overlappedCIDRs, ignoredPrivateCIDRs
 
@@ -92,27 +114,18 @@ def process(json_file):
                 if len(entry['country_code']) == 3:
                     entry['country_code'] = convert_to_2_letter_code(entry['country_code'])
 
-                # Handle overlaps / subnets
                 keep_network = True
                 was_in_subnet = False
-                
-                for kept_entry in result:
-                    existing_range = ipaddress.ip_network(kept_entry['ip_range'], strict=False)
-                    if ip_network.subnet_of(existing_range):
-                        test_data_2 = kept_entry.copy()
-                        del(test_data_2['ip_range'])
-                        # If a subnet has the same info as the supernet, remove it entirely.
-                        if entry_copy == test_data_2:
-                            keep_network = False
-                        else:
-                            # A subnet can have separate info from its larger network and as such should be handled as correct
-                            keep_network = True
-                            was_in_subnet = True
-                    elif ip_network.overlaps(existing_range):
-                        # Print a warning and discard the overlapping network
-                        keep_network = False
-                        overlappedCIDRs += 1
-                        print(f'{ip_network} was discarded for overlapping with {existing_range}')
+                with Pool() as pool:
+                    args = zip(result, [ip_network] * len(result), [entry_copy] * len(result))
+                    results = pool.imap_unordered(should_keep, args, chunksize=50)
+                    for keep, was_subnet in results:
+                        if not keep:
+                            keep_network= False
+                            pool.terminate()
+                            break
+                        if was_subnet:
+                            was_in_subnet= True
 
                 if keep_network:
                     unique_ranges.add(ip_network)
