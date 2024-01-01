@@ -3,7 +3,6 @@ import ujson
 import ipaddress
 import pycountry
 import time
-import tracemalloc
 
 # Some global stats
 totalIPs = 0
@@ -53,13 +52,11 @@ def deduplicate(ip_data_list):
 
     return result
 
-def process(json_file, track_mem):
+def process(json_file):
     global totalIPs, duplicatedCIDRs, overlappedCIDRs, ignoredPrivateCIDRs
 
     # Record the start time and memory usage before processing
     start_time = time.time()
-    if track_mem != 0:
-        tracemalloc.start()
 
     with open(json_file, 'r') as file:
         ip_data_list = ujson.load(file)
@@ -134,16 +131,9 @@ def process(json_file, track_mem):
         print(f'{totalIPs:,} IPs in the final data source. There were {duplicatedCIDRs:,} duplicated, {overlappedCIDRs:,} overlapping, and {ignoredPrivateCIDRs:,} private CIDRs that were discarded.')
         print(f'Time taken: {elapsed_time:.2f} seconds')
 
-        if track_mem != 0:
-            mem_used = tracemalloc.get_traced_memory()
-            peak_usage = mem_used[1] * 0.000001
-            print(f'Memory used: {peak_usage} MB')
-            tracemalloc.stop()
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('json_file', help='path to output JSON file')
-    parser.add_argument('--track_mem', help="Pass 1 to enable memory usage tracking", default=0, required=False)
     args = parser.parse_args()
 
-    process(args.json_file, args.track_mem)
+    process(args.json_file)
