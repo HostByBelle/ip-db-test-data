@@ -127,7 +127,8 @@ def process(json_file):
         # Calculate the time taken and memory used
         elapsed_time = time.time() - start_time
 
-        print(f'{totalIPs:,} IPs in the final data source. There were {duplicatedCIDRs:,} duplicated, {overlappedCIDRs:,} overlapping, and {ignoredPrivateCIDRs:,} private CIDRs that were discarded.')
+        print(f'{totalIPs:,} IPs in the final data source.')
+        print(f'There were {duplicatedCIDRs:,} duplicated, {overlappedCIDRs:,} overlapping, and {ignoredPrivateCIDRs:,} private CIDRs that were discarded.')
         print(f'Time taken: {elapsed_time:.2f} seconds')
 
 if __name__ == '__main__':

@@ -103,9 +103,15 @@ region_info = {
     'cn-north-1': {
         'country_code': 'CN',
     },
-    'ap-southeast-5': { #https://www.netify.ai/resources/networks/amazon-aws/pop/ap-southeast-5
+    'ap-southeast-5': { # https://www.netify.ai/resources/networks/amazon-aws/pop/ap-southeast-5
         'country_code': 'ZN',
     },
+    'eusc-de-east-1': { # https://ipinfo.io/136.18.144.1
+        'country_code': 'DE',
+    },
+    'ap-southeast-6': { # https://ipinfo.io/3.2.32.1
+        'country_code': 'NZ',
+    }
 }
 
 def parse(aws_ranges, json_file, ipver):
