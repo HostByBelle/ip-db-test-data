@@ -114,6 +114,9 @@ region_info = {
     'us-sanjose-1': {
         'country_code': 'US',
     },
+    'sa-valparaiso-1': {
+        'country_code': 'CL',
+    }
 }
 
 def parse(updown_data, json_file):
