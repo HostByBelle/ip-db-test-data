@@ -7,7 +7,6 @@ import time
 # Some global stats
 totalIPs = 0
 duplicatedCIDRs = 0
-overlappedCIDRs = 0
 ignoredPrivateCIDRs = 0
 
 
@@ -56,7 +55,7 @@ def deduplicate(ip_data_list):
 
 
 def process(json_file):
-    global totalIPs, duplicatedCIDRs, overlappedCIDRs, ignoredPrivateCIDRs
+    global totalIPs, duplicatedCIDRs, ignoredPrivateCIDRs
 
     # Record the start time and memory usage before processing
     start_time = time.time()
@@ -120,13 +119,6 @@ def process(json_file):
                             # A subnet can have separate info from its larger network and as such should be handled as correct
                             keep_network = True
                             was_in_subnet = True
-                    elif ip_network.overlaps(existing_range):
-                        # Print a warning and discard the overlapping network
-                        keep_network = False
-                        overlappedCIDRs += 1
-                        print(
-                            f"{ip_network} was discarded for overlapping with {existing_range}"
-                        )
 
                 if keep_network:
                     unique_ranges.add(ip_network)
@@ -142,7 +134,7 @@ def process(json_file):
         elapsed_time = time.time() - start_time
 
         print(
-            f"{totalIPs:,} IPs in the final data source. There were {duplicatedCIDRs:,} duplicated, {overlappedCIDRs:,} overlapping, and {ignoredPrivateCIDRs:,} private CIDRs that were discarded."
+            f"{totalIPs:,} IPs in the final data source. There were {duplicatedCIDRs:,} duplicated and {ignoredPrivateCIDRs:,} private CIDRs that were discarded."
         )
         print(f"Time taken: {elapsed_time:.2f} seconds")
 
