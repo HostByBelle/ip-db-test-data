@@ -116,6 +116,9 @@ region_info = {
     },
     'sa-valparaiso-1': {
         'country_code': 'CL',
+    },
+    'us-saltlake-2': {
+        'country_code': 'US',
     }
 }
 
