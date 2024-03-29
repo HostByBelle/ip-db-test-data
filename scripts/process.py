@@ -30,8 +30,15 @@ def process(json_file):
 
     with open(json_file, "r", encoding="utf-8") as file:
         ip_data_list = json.load(file)
-
         result = {}
+
+        ip_data_list = dict(
+            sorted(
+                ip_data_list.items(),
+                key=lambda item: ipaddress.ip_network(item[0]).num_addresses,
+                reverse=False,
+            )
+        )
 
         for cidr, entry in ip_data_list.items():
             if not entry:
@@ -57,7 +64,6 @@ def process(json_file):
                 if ip_network.subnet_of(existing_range):
                     # If a subnet has the same info as the supernet, remove it entirely.
                     if entry == kept_entry:
-                        print("Identically matches")
                         keep_network = False
                     else:
                         # A subnet can have separate info from its larger network and as such should be handled as correct
