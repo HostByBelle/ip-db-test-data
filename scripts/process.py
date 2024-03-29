@@ -31,14 +31,6 @@ def process(json_file):
     with open(json_file, "r", encoding="utf-8") as file:
         ip_data_list = json.load(file)
 
-        # Sort the list based on the number of IP addresses in descending order
-        ip_data_list.sort(
-            key=lambda entry: ipaddress.ip_network(
-                entry["ip_range"], strict=False
-            ).num_addresses,
-            reverse=True,
-        )
-
         result = {}
 
         for cidr, entry in ip_data_list:
