@@ -36,7 +36,7 @@ def process(json_file):
             sorted(
                 ip_data_list.items(),
                 key=lambda item: ipaddress.ip_network(item[0]).num_addresses,
-                reverse=False,
+                reverse=True,
             )
         )
 
