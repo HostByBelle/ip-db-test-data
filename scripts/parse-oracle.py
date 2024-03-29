@@ -155,12 +155,12 @@ def parse(updown_data, json_file):
         for region in oracle_ips["regions"]:
             if region["region"] in region_info:
                 for cidr in region["cidrs"]:
-                    if cidr in data_list:
-                        data_list[cidr] = merge(
-                            data_list[cidr], region_info[region["region"]]
+                    if cidr["cidr"] in data_list:
+                        data_list[cidr["cidr"]] = merge(
+                            data_list[cidr["cidr"]], region_info[region["region"]]
                         )
                     else:
-                        data_list[cidr] = region_info[region["region"]]
+                        data_list[cidr["cidr"]] = region_info[region["region"]]
             else:
                 region = region["region"]
                 print(f"(Oracle) {region} is not yet mapped")
