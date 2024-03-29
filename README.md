@@ -42,13 +42,11 @@ The data is built utilizing self-published data by various providers. No 3rd par
 
 ## Data Processing
 
-Each release will undergo a final "processing" step to ensure the generated data is of good quality.
+Each release will go through a few "processing" steps to ensure the generated data is of good quality.  
 The order of processing is as follows:
 
-1. Basic de-duplication by removing duplicate entries of the same CIDR.
-   - A warning will be generated if a duplicate does not contain the same data as it's original.
-   - Only the first instance of a CIDR will be retained in the final data source.
-2. The de-duplicated list is then sorted in decending order by the quantity of IP addresses in each CIDR
+1. During each parsing step, deduplication is performed. Identical CIDRs are merged if shared properties between the two match, if not the currently existing one will be retained.
+2. The complete list is then sorted in decending order by the quantity of IP addresses in each CIDR
 3. Any CIDRs which are private networks are discarded.
 4. Any CIDRs which haven no data associated with them are discarded.
 5. Any 3-letter country codes are converted to 2 letter country codes.
@@ -57,3 +55,6 @@ The order of processing is as follows:
    - Any overlapping CIDRs are simply discarded with a message as of this moment.
    - If a subnet has identical information to it's supernet, it's removed from the dataset.
 7. The final dataset after processing is written to the JSON file before then being uploaded to the release.
+
+Unfortunately, this final step is proving to be quite slow due to it's time complexity which reduces the data size we can easily build.
+If you have ideas on how to optimize this, please share!
