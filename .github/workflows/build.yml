@@ -69,7 +69,7 @@ jobs:
           python ./scripts/parse-pingdom.py ./data/feed.xml ./test-data/IPv6.json ipv6
           python ./scripts/parse-hetrix.py ./data/hetrix.txt ./test-data/IPv4.json
           python ./scripts/parse-updown.py ./data/updown.json ./test-data/IPv4.json ip
-          python ./scripts/parse-updown.py ./data/updown.json ./test-data/IPv6.json ip6
+          python ./scripts/parse-updown.py ./data/updown.json ./test-data/IPv6.json ipv6
           python ./scripts/parse-statuscake.py ./data/statuscake.json ./test-data/IPv4.json ip
           python ./scripts/parse-statuscake.py ./data/statuscake.json ./test-data/IPv6.json ipv6
           python ./scripts/parse-aws.py ./data/aws-ranges.json ./test-data/IPv4.json ip

@@ -1,158 +1,180 @@
 import argparse
-import ujson
+import json
 
 # Manually gathered from https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html
 # It's somewhat incomplete, though so some info was gathered via google and educated guesses.
 region_info = {
-    'us-east-1': {
-        'country_code': 'US',
+    "us-east-1": {
+        "country_code": "US",
     },
-    'us-east-2': {
-        'country_code': 'US',
+    "us-east-2": {
+        "country_code": "US",
     },
-    'us-west-1': {
-        'country_code': 'US',
+    "us-west-1": {
+        "country_code": "US",
     },
-    'us-west-2': {
-        'country_code': 'US',
+    "us-west-2": {
+        "country_code": "US",
     },
-    'af-south-1': {
-        'country_code': 'ZA',
+    "af-south-1": {
+        "country_code": "ZA",
     },
-    'ap-east-1': {
-        'country_code': 'HK',
+    "ap-east-1": {
+        "country_code": "HK",
     },
-    'ap-south-2': {
-        'country_code': 'IN',
+    "ap-south-2": {
+        "country_code": "IN",
     },
-    'ap-southeast-3': {
-        'country_code': 'ID',
+    "ap-southeast-3": {
+        "country_code": "ID",
     },
-    'ap-southeast-4': {
-        'country_code': 'AU',
+    "ap-southeast-4": {
+        "country_code": "AU",
     },
-    'ap-south-1': {
-        'country_code': 'IN',
+    "ap-south-1": {
+        "country_code": "IN",
     },
-    'ap-northeast-3': {
-        'country_code': 'JP',
+    "ap-northeast-3": {
+        "country_code": "JP",
     },
-    'ap-northeast-2': {
-        'country_code': 'KR',
+    "ap-northeast-2": {
+        "country_code": "KR",
     },
-    'ap-southeast-1': {
-        'country_code': 'SG',
+    "ap-southeast-1": {
+        "country_code": "SG",
     },
-    'ap-southeast-2': {
-        'country_code': 'AU',
+    "ap-southeast-2": {
+        "country_code": "AU",
     },
-    'ap-northeast-1': {
-        'country_code': 'JP',
+    "ap-northeast-1": {
+        "country_code": "JP",
     },
-    'ca-central-1': {
-        'country_code': 'CA',
+    "ca-central-1": {
+        "country_code": "CA",
     },
-    'eu-central-1': {
-        'country_code': 'DE',
+    "eu-central-1": {
+        "country_code": "DE",
     },
-    'eu-west-1': {
-        'country_code': 'IE',
+    "eu-west-1": {
+        "country_code": "IE",
     },
-    'eu-west-2': {
-        'country_code': 'GB',
+    "eu-west-2": {
+        "country_code": "GB",
     },
-    'eu-south-1': {
-        'country_code': 'IT',
+    "eu-south-1": {
+        "country_code": "IT",
     },
-    'eu-west-3': {
-        'country_code': 'FR',
+    "eu-west-3": {
+        "country_code": "FR",
     },
-    'eu-south-2': {
-        'country_code': 'ES',
+    "eu-south-2": {
+        "country_code": "ES",
     },
-    'eu-north-1': {
-        'country_code': 'SE',
+    "eu-north-1": {
+        "country_code": "SE",
     },
-    'eu-central-2': {
-        'country_code': 'CH',
+    "eu-central-2": {
+        "country_code": "CH",
     },
-    'il-central-1': {
-        'country_code': 'IL',
+    "il-central-1": {
+        "country_code": "IL",
     },
-    'me-south-1': {
-        'country_code': 'BH',
+    "me-south-1": {
+        "country_code": "BH",
     },
-    'me-central-1': {
-        'country_code': 'AE',
+    "me-central-1": {
+        "country_code": "AE",
     },
-    'sa-east-1': {
-        'country_code': 'BR',
+    "sa-east-1": {
+        "country_code": "BR",
     },
-    'us-gov-east-1': {
-        'country_code': 'US',
+    "us-gov-east-1": {
+        "country_code": "US",
     },
-    'us-gov-west-1': {
-        'country_code': 'US',
+    "us-gov-west-1": {
+        "country_code": "US",
     },
-    'ca-west-1': {
-        'country_code': 'CA',
+    "ca-west-1": {
+        "country_code": "CA",
     },
-    'cn-northwest-1': {
-        'country_code': 'CN',
+    "cn-northwest-1": {
+        "country_code": "CN",
     },
-    'cn-north-1': {
-        'country_code': 'CN',
+    "cn-north-1": {
+        "country_code": "CN",
     },
-    'ap-southeast-5': { # https://www.netify.ai/resources/networks/amazon-aws/pop/ap-southeast-5
-        'country_code': 'ZN',
+    "ap-southeast-5": {  # https://www.netify.ai/resources/networks/amazon-aws/pop/ap-southeast-5
+        "country_code": "ZN",
     },
-    'eusc-de-east-1': { # https://ipinfo.io/136.18.144.1
-        'country_code': 'DE',
+    "eusc-de-east-1": {  # https://ipinfo.io/136.18.144.1
+        "country_code": "DE",
     },
-    'ap-southeast-6': { # https://ipinfo.io/3.2.32.1
-        'country_code': 'NZ',
-    }
+    "ap-southeast-6": {  # https://ipinfo.io/3.2.32.1
+        "country_code": "NZ",
+    },
 }
 
+
+def merge(existing, new):
+    if existing == new:
+        return existing
+    else:
+        keep = True
+        # Loop through all of the existing values, if they match the new one we can merge them
+        for key, value in existing.items():
+            if new[key] != value:
+                keep = False
+
+        if keep:
+            return existing + new
+        else:
+            print(f"Existing: {existing}. New: {new}")
+            return existing
+
+
 def parse(aws_ranges, json_file, ipver):
-    data_list = []
+    data_list = {}
 
     try:
         # Load existing data from the JSON file
-        with open(json_file, 'r') as existing_file:
-            data_list = ujson.load(existing_file)
+        with open(json_file, "r", encoding="utf-8") as existing_file:
+            data_list = json.load(existing_file)
     except FileNotFoundError:
         pass  # File doesn't exist yet, ignore and proceed with an empty list
 
-    with open(aws_ranges, 'r') as file:
-        aws_ips = ujson.load(file)
-        if ipver == 'ipv6':
-            prefixes = aws_ips['ipv6_prefixes']
+    with open(aws_ranges, "r", encoding="utf-8") as file:
+        aws_ips = json.load(file)
+        if ipver == "ipv6":
+            prefixes = aws_ips["ipv6_prefixes"]
         else:
-            prefixes = aws_ips['prefixes']
+            prefixes = aws_ips["prefixes"]
 
         for prefix in prefixes:
-            prefix_key = ipver + '_prefix'
+            prefix_key = ipver + "_prefix"
             if prefix_key in prefix and prefix[prefix_key]:
-                if prefix['region'] in region_info:
-                    data_list.append({
-                        'ip_range': prefix[prefix_key],
-                        **region_info[prefix['region']]
-                    })
+                cidr = prefix[prefix_key]
+                if prefix["region"] in region_info:
+                    if cidr in data_list:
+                        data_list[cidr] = merge(
+                            data_list[cidr], region_info[prefix["region"]]
+                        )
+                    else:
+                        data_list[cidr] = region_info[prefix["region"]]
                 else:
-                    if prefix['region'] != 'GLOBAL':
-                        region = prefix['region']
-                        print(f'(AWS) {region} is not yet mapped')
+                    if prefix["region"] != "GLOBAL":
+                        region = prefix["region"]
+                        print(f"(AWS) {region} is not yet mapped")
 
         # Write the updated data back to the JSON file
-        with open(json_file, 'w', encoding='utf-8') as json_file:
-            ujson.dump(data_list, json_file, indent=0, ensure_ascii=False)
+        with open(json_file, "w", encoding="utf-8") as json_file:
+            json.dump(data_list, json_file, indent=0, ensure_ascii=False)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('aws_ranges', help='path to the AWS ranges JSON file')
-    parser.add_argument('json_file', help='path to output JSON file')
-    parser.add_argument('ipver', help='IP version (ip or ipv6)')
+    parser.add_argument("aws_ranges", help="path to the AWS ranges JSON file")
+    parser.add_argument("json_file", help="path to output JSON file")
+    parser.add_argument("ipver", help="IP version (ip or ipv6)")
     args = parser.parse_args()
 
     parse(args.aws_ranges, args.json_file, args.ipver)
