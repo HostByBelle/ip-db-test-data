@@ -33,7 +33,7 @@ def process(json_file):
 
         result = {}
 
-        for cidr, entry in ip_data_list:
+        for cidr, entry in ip_data_list.items():
             if not entry:
                 continue
 
@@ -52,11 +52,12 @@ def process(json_file):
             keep_network = True
             was_in_subnet = False
 
-            for kept_cidr, kept_entry in result:
+            for kept_cidr, kept_entry in result.items():
                 existing_range = ipaddress.ip_network(kept_cidr, strict=False)
                 if ip_network.subnet_of(existing_range):
                     # If a subnet has the same info as the supernet, remove it entirely.
                     if entry == kept_entry:
+                        print("Identically matches")
                         keep_network = False
                     else:
                         # A subnet can have separate info from its larger network and as such should be handled as correct
@@ -70,10 +71,10 @@ def process(json_file):
                         f"{ip_network} was discarded for overlapping with {existing_range}"
                     )
 
-                if keep_network:
-                    result[cidr] = entry
-                    if not was_in_subnet:
-                        totalIPs += ip_network.num_addresses
+            if keep_network:
+                result[cidr] = entry
+                if not was_in_subnet:
+                    totalIPs += ip_network.num_addresses
 
         # Write the updated data back to the JSON file
         with open(json_file, "w", encoding="utf-8") as json_file:
