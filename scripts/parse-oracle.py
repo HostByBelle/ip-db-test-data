@@ -72,6 +72,9 @@ region_info = {
     "ap-singapore-1": {
         "country_code": "SG",
     },
+    "ap-singapore-2": {
+        "country_code": "SG",
+    },
     "af-johannesburg-1": {
         "country_code": "ZA",
     },
