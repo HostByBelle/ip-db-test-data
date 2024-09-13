@@ -123,6 +123,9 @@ region_info = {
     "us-saltlake-2": {
         "country_code": "US",
     },
+    "me-riyadh-1": {
+        "country_code": "SA",
+    }
 }
 
 
