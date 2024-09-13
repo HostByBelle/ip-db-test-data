@@ -104,7 +104,7 @@ region_info = {
         "country_code": "CN",
     },
     "ap-southeast-5": {  # https://www.netify.ai/resources/networks/amazon-aws/pop/ap-southeast-5
-        "country_code": "ZN",
+        "country_code": "NZ",
     },
     "eusc-de-east-1": {  # https://ipinfo.io/136.18.144.1
         "country_code": "DE",
