@@ -39,6 +39,9 @@ The data is built utilizing self-published data by various providers. No 3rd par
 - [Google Cloud Geofeed](https://www.gstatic.com/ipranges/cloud_geofeed)
   - IP address types: `IPv4`, `IPv6`
   - Data available: `Country Code`, `Subdivision Code`, `City Name`
+- [Charter Communications Geofeed](https://s3.amazonaws.com/charter-geo-feed/Charter-Geofeed.csv)
+  - IP address types: `IPv4`, `IPv6`
+  - Data available: `Country Code`, `Subdivision Code`, `City Name`, `Postal Code`
 
 ## Data Processing
 
