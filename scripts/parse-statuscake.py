@@ -38,13 +38,13 @@ def parse(updown_data, json_file, ipver):
         pass  # File doesn't exist yet, ignore and proceed with an empty list
 
     with open(updown_data, "r") as file:
-        updown_nodes = json.load(file)
-        for node in updown_nodes:
-            if not updown_nodes[node][ipver]:
+        statuscake_nodes = json.load(file)
+        for node in statuscake_nodes:
+            if not statuscake_nodes[node][ipver]:
                 continue
 
-            cidr = get_range(updown_nodes[node][ipver])
-            properties = {"country_code": updown_nodes[node]["countryiso"]}
+            cidr = get_range(statuscake_nodes[node][ipver])
+            properties = {"country_code": statuscake_nodes[node]["countryiso"]}
             if cidr in data_list:
                 data_list[cidr] = merge(data_list[cidr], properties)
             else:

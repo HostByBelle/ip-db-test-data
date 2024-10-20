@@ -2,22 +2,26 @@ import argparse
 import json
 
 # Manually gathered from https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html
-# It's somewhat incomplete, though so some info was gathered via google and educated guesses.
 region_info = {
     "us-east-1": {
         "country_code": "US",
+        "subdivision_1_iso_code": "US-VA",
     },
     "us-east-2": {
         "country_code": "US",
+        "subdivision_1_iso_code": "US-OH"
     },
     "us-west-1": {
         "country_code": "US",
+        "subdivision_1_iso_code": "US-CA"
     },
     "us-west-2": {
         "country_code": "US",
+        "subdivision_1_iso_code": "US-OR"
     },
     "af-south-1": {
         "country_code": "ZA",
+        "subdivision_1_iso_code": "US-OR"
     },
     "ap-east-1": {
         "country_code": "HK",
@@ -103,14 +107,8 @@ region_info = {
     "cn-north-1": {
         "country_code": "CN",
     },
-    "ap-southeast-5": {  # https://www.netify.ai/resources/networks/amazon-aws/pop/ap-southeast-5
-        "country_code": "NZ",
-    },
-    "eusc-de-east-1": {  # https://ipinfo.io/136.18.144.1
-        "country_code": "DE",
-    },
-    "ap-southeast-6": {  # https://ipinfo.io/3.2.32.1
-        "country_code": "NZ",
+    "ap-southeast-5": {
+        "country_code": "MY",
     },
 }
 
