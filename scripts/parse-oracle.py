@@ -107,21 +107,26 @@ region_info = {
     },
     "us-ashburn-1": {
         "country_code": "US",
+        "subdivision_1_iso_code":"US-VA"
     },
     "us-chicago-1": {
         "country_code": "US",
+        "subdivision_1_iso_code":"US-IL"
     },
     "us-phoenix-1": {
         "country_code": "US",
+        "subdivision_1_iso_code":"US-AZ"
     },
     "us-sanjose-1": {
         "country_code": "US",
+        "subdivision_1_iso_code":"US-CA"
     },
     "sa-valparaiso-1": {
         "country_code": "CL",
     },
-    "us-saltlake-2": {
+    "us-saltlake-2": { # Inferred from name - not listed on Oracle's docs
         "country_code": "US",
+        "subdivision_1_iso_code":"US-UT"
     },
     "me-riyadh-1": {
         "country_code": "SA",

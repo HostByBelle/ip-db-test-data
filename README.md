@@ -18,11 +18,11 @@ The data is built utilizing self-published data by various providers. No 3rd par
   - Data available: `Country Code`, `City`, `Latitude`, `Longitude`
 - [AWS IP Address Ranges](https://ip-ranges.amazonaws.com/ip-ranges.json)
   - IP address types: `IPv4`, `IPv6`
-  - Data available: `Country Code`
+  - Data available: `Country Code`, `Subdivision Code` (incomplete)
   - Note: Utilizes a [hand-built mapping](https://github.com/HostByBelle/ip-db-test-data/blob/main/scripts/parse-aws.py#L6) between AWS's region IDs and their locations.
 - [Oracle Cloud IP Address Ranges](https://docs.oracle.com/en-us/iaas/tools/public_ip_ranges.json)
   - IP address types: `IPv4`
-  - Data available: `Country Code`
+  - Data available: `Country Code`, `Subdivision Code` (incomplete)
   - Note: Utilizes a [hand-built mapping](https://github.com/HostByBelle/ip-db-test-data/blob/main/scripts/parse-oracle.py#L5) between Oracle's region IDs and their locations.
 - [Linode Geofeed](https://geoip.linode.com/)
   - IP address types: `IPv4`, `IPv6`
