@@ -35,6 +35,10 @@ def parse(geofeed_csv, json_file, ipver):
         csv_reader = csv.reader(file)
 
         for row in csv_reader:
+            if len(row) < 4:
+                print(f"Geofeed file: {geofeed_csv} has rows that are incomplete.")
+                continue
+
             if not row[0].startswith("#"):
                 network = ipaddress.ip_network(row[0], strict=False)
                 if (ipver == "ip" and network.version == 4) or (
