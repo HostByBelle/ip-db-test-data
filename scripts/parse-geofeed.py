@@ -35,25 +35,33 @@ def parse(geofeed_csv, json_file, ipver):
         csv_reader = csv.reader(file)
 
         for row in csv_reader:
+            # Ensure we skip over any rows which are comments
+            try:
+                if row[0].startswith("#"):
+                    continue
+            except IndexError:
+                continue
+            
+            # Generate a message for an incomplete row
             if len(row) < 4:
                 print(f"Geofeed file: {geofeed_csv} has rows that are incomplete.")
                 continue
 
-            if not row[0].startswith("#"):
-                network = ipaddress.ip_network(row[0], strict=False)
-                if (ipver == "ip" and network.version == 4) or (
-                    ipver == "ipv6" and network.version == 6
-                ):
-                    properties = {
-                        "country_code": row[1],
-                        "subdivision_1_iso_code": row[2],
-                        "city": row[3],
-                        "postal_code": row[4],
-                    }
-                    if row[0] in data_list:
-                        data_list[row[0]] = merge(data_list[row[0]], properties)
-                    else:
-                        data_list[row[0]] = properties
+            # Record the row
+            network = ipaddress.ip_network(row[0], strict=False)
+            if (ipver == "ip" and network.version == 4) or (
+                ipver == "ipv6" and network.version == 6
+            ):
+                properties = {
+                    "country_code": row[1],
+                    "subdivision_1_iso_code": row[2],
+                    "city": row[3],
+                    "postal_code": row[4],
+                }
+                if row[0] in data_list:
+                    data_list[row[0]] = merge(data_list[row[0]], properties)
+                else:
+                    data_list[row[0]] = properties
 
         # Write the updated data back to the JSON file
         with open(json_file, "w", encoding="utf-8") as json_file:
