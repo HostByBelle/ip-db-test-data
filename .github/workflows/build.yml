@@ -50,6 +50,7 @@ jobs:
           curl --show-error --output vultr-geofeed.csv --location "https://geofeed.constant.com/"
           curl --show-error --output starlink-geofeed.csv --location "https://geoip.starlinkisp.net/feed.csv"
           curl --show-error --output google-geofeed.csv --location "https://www.gstatic.com/ipranges/cloud_geofeed"
+          curl --show-error --output charter-geofeed.csv --location "https://s3.amazonaws.com/charter-geo-feed/Charter-Geofeed.csv"
           #curl --show-error --output geolocatemuch-geofeed.csv --location "https://geolocatemuch.com/geofeeds/validated-all.csv"
 
       - name: Setup Python
@@ -83,10 +84,13 @@ jobs:
             python ./scripts/parse-geofeed.py $file ./test-data/IPv6.json ipv6
           done
 
-      - name: Deduplicate and Process
+      - name: Deduplicate and Process IPv4
         run: |
           echo -e "\n## IPv4 Processing Result\n" >> results.md
           python ./scripts/process.py ./test-data/IPv4.json >> results.md
+
+      - name: Deduplicate and Process IPv6
+        run: |
           echo -e "\n## IPv6 Processing Result\n" >> results.md
           python ./scripts/process.py ./test-data/IPv6.json >> results.md
 
