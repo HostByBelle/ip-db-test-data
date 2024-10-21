@@ -25,22 +25,25 @@ The data is built utilizing self-published data by various providers. No 3rd par
 
 ### Self-published Geofeeds
 
-- [Linode Geofeed](https://geoip.linode.com/)
+- [Linode](https://geoip.linode.com/)
   - IP address types: `IPv4`, `IPv6`
   - Data available: `Country Code`, `Subdivision Code`, `City Name`, `Postal Code`
-- [DigitalOcean Geofeed](https://digitalocean.com/geo/google.csv)
+- [DigitalOcean](https://digitalocean.com/geo/google.csv)
   - IP address types: `IPv4`, `IPv6`
   - Data available: `Country Code`, `Subdivision Code`, `City Name`, `Postal Code`
-- [Vultr Geofeed](https://digitalocean.com/geo/google.csv)
+- [Vultr](https://digitalocean.com/geo/google.csv)
   - IP address types: `IPv4`, `IPv6`
   - Data available: `Country Code`, `Subdivision Code`, `City Name`, `Postal Code`
-- [Starlink Geofeed](https://geoip.starlinkisp.net/feed.csv)
+- [Starlink](https://geoip.starlinkisp.net/feed.csv)
   - IP address types: `IPv4`, `IPv6`
   - Data available: `Country Code`, `Subdivision Code`, `City Name`
-- [Google Cloud Geofeed](https://www.gstatic.com/ipranges/cloud_geofeed)
+- [Google Cloud](https://www.gstatic.com/ipranges/cloud_geofeed)
   - IP address types: `IPv4`, `IPv6`
   - Data available: `Country Code`, `Subdivision Code`, `City Name`
-- [AWS Geofeed](http://ip-ranges.amazonaws.com/geo-ip-feed.csv)
+- [AWS](http://ip-ranges.amazonaws.com/geo-ip-feed.csv)
+  - IP address types: `IPv4`, `IPv6`
+  - Data available: `Country Code`, `Subdivision Code`, `City Name`
+- [Ting Fiber](https://geoip.tingfiber.net/tf-geofeed.csv)
   - IP address types: `IPv4`, `IPv6`
   - Data available: `Country Code`, `Subdivision Code`, `City Name`
 
