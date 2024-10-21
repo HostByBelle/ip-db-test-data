@@ -54,7 +54,7 @@ def parse(geofeed_csv, json_file, ipver):
             ):
                 
                 # Ensure we don't create an empty postal code field for these
-                if row[4] is not None:
+                if row[4] is not None and row[4] is not "":
                     properties = {
                         "country_code": row[1],
                         "subdivision_1_iso_code": row[2],
