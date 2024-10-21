@@ -1,3 +1,4 @@
+## Kept for historical reference. AWS Now has a self-published geofeed which was added to their docs sometime between September 2nd and September 9th, 2024.
 import argparse
 import json
 

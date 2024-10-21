@@ -52,12 +52,22 @@ def parse(geofeed_csv, json_file, ipver):
             if (ipver == "ip" and network.version == 4) or (
                 ipver == "ipv6" and network.version == 6
             ):
-                properties = {
-                    "country_code": row[1],
-                    "subdivision_1_iso_code": row[2],
-                    "city": row[3],
-                    "postal_code": row[4],
+                
+                # Ensure we don't create an empty postal code field for these
+                if row[4] is not None and row[4] is not "":
+                    properties = {
+                        "country_code": row[1],
+                        "subdivision_1_iso_code": row[2],
+                        "city": row[3],
+                        "postal_code": row[4],
+                    }
+                else:
+                    properties = {
+                        "country_code": row[1],
+                        "subdivision_1_iso_code": row[2],
+                        "city": row[3],
                 }
+
                 if row[0] in data_list:
                     data_list[row[0]] = merge(data_list[row[0]], properties)
                 else:
