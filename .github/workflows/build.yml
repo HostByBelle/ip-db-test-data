@@ -50,6 +50,7 @@ jobs:
           curl --show-error --output starlink-geofeed.csv --location "https://geoip.starlinkisp.net/feed.csv"
           curl --show-error --output google-geofeed.csv --location "https://www.gstatic.com/ipranges/cloud_geofeed"
           curl --show-error --output aws-geofeed.csv --location "http://ip-ranges.amazonaws.com/geo-ip-feed.csv"
+          curl --show-error --output ting-geofeed.csv --location "https://geoip.tingfiber.net/tf-geofeed.csv"
           #curl --show-error --output geolocatemuch-geofeed.csv --location "https://geolocatemuch.com/geofeeds/validated-all.csv"
 
       - name: Setup Python
