@@ -43,7 +43,7 @@ The data is built utilizing self-published data by various providers. No 3rd par
 - [AWS](http://ip-ranges.amazonaws.com/geo-ip-feed.csv)
   - IP address types: `IPv4`, `IPv6`
   - Data available: `Country Code`, `Subdivision Code`, `City Name`
-- [Ting Fiber](https://geoip.tingfiber.net/tf-geofeed.csv)
+- [Ting Fiber](https://geoip.tingfiber.net/tf-geofeed.csv) (**Paused:** SSL certificate expired. Check & resume in the future)
   - IP address types: `IPv4`, `IPv6`
   - Data available: `Country Code`, `Subdivision Code`, `City Name`
 
